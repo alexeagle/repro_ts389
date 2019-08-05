@@ -1,0 +1,24 @@
+load("@npm_bazel_typescript//:index.bzl", "ts_library")
+
+ts_library(
+    name = "mylib",
+    srcs = glob(["src/*.ts"]),
+    module_name = "mylib",
+    module_root = "src/index",
+    deps = ["@npm//@types"],
+)
+
+ts_library(
+    name = "mylib-test",
+    srcs = glob(["test/*.ts"]),
+    deps = ["@npm//@types", ":mylib"],
+    module_name = "mylib-test",
+    module_root = "test",
+)
+
+load("@npm_bazel_jasmine//:index.bzl", "jasmine_node_test")
+
+jasmine_node_test(
+    name = "mylib-test-binary",
+    srcs = ["mylib-test"],
+)
